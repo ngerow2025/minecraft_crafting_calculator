@@ -30,6 +30,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import {Card, CardContent} from "@/components/ui/card.tsx";
+import {Suspense} from "react";
 
 
 export function MachineList() {
@@ -69,7 +70,7 @@ function MachineAdder() {
         form.setValue("quantity", form.getValues("quantity") - 1, {shouldValidate: true})
     }
 
-    return <Card className={"pt-6"}>
+    return <Card className={"pt-6 my-8"}>
         <CardContent>
 
             <Form {...form}>
@@ -99,12 +100,15 @@ function MachineAdder() {
                                 <FormLabel>Machine name</FormLabel>
                                 <FormControl>
                                     <span className={"flex w-full flex-row"}>
-                                        <Input placeholder="machine count" type={"number"} className={"w-5/6 rounded-l-md rounded-r-none"} {...field} />
+                                        <Input placeholder="machine count" type={"number"}
+                                               className={"grow rounded-l-md rounded-r-none"} {...field} />
                                         <span className={"flex flex-col h-9"}>
                                             <Button className={
-                                                "w-1/6 h-1/2 rounded-none rounded-tr-md text-inherit bg-transparent text-inherit bg-transparent border-r border-t"}
+                                                "w-1/6 h-1/2 rounded-none rounded-tr-md text-inherit bg-transparent border-r border-t"}
                                                     onClick={inc} type={"button"}>+</Button>
-                                            <Button className={"w-1/6 h-1/2 rounded-none rounded-br-md text-inherit bg-transparent border-r border-b border-t"} onClick={dec} type={"button"}>-</Button>
+                                            <Button
+                                                className={"w-1/6 h-1/2 rounded-none rounded-br-md text-inherit bg-transparent border-r border-b border-t"}
+                                                onClick={dec} type={"button"}>-</Button>
                                         </span>
 
                                     </span>
@@ -206,9 +210,16 @@ function MachineDataTable<TData, TValue>({
 
 
 function CurrentMachineList() {
-    let data = [
-        {"name": "electrolyzer", "count": 1},
-        {"name": "crusher", "count": 1},
-    ]
-    return <MachineDataTable columns={columns} data={data}/>
+    // let data = [
+    //     {"name": "electrolyzer", "count": 1},
+    //     {"name": "crusher", "count": 1},
+    // ]
+    // return <MachineDataTable columns={columns} data={data}/>
+    return <Suspense fallback={<div>Loading...</div>}>
+        <CurrentMachineListFetcher/>
+    </Suspense>
+}
+
+function  CurrentMachineListFetcher() {
+    const {data, isLoading, isError} = useQuery
 }
